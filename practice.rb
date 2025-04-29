@@ -27,3 +27,23 @@ blockchain = [
 # Anthony's KelloggCoin balance is 2650
 
 # 👇👇👇 Your code HERE 👇👇👇
+
+puts blockchain[0]["to_user"] 
+
+balances = Hash.new(0)
+
+blockchain.each do |tx|
+  from = tx["from_user"]
+  to = tx["to_user"]
+  amount = tx["amount"]
+
+  balances[from] -= amount if from # Subtract from sender, unless it's a "mint" transaction
+  balances[to] += amount if to     # Add to recipient
+end
+
+# Only print balances for users mentioned in the blockchain
+users = balances.keys.compact.sort # Remove nil and sort for consistent output
+
+users.each do |user|
+  puts "#{user.capitalize}'s KelloggCoin balance is #{balances[user]}"
+end
